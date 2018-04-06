@@ -1,11 +1,11 @@
 import { handleStatus } from '../utils/promises-helepers.js'
+import { partialize, pipe } from '../utils/operators.js'
 
 const API = 'http://localhost:3000/notas'
 
-const sumItems = code => notas =>
-  notas.$flatMap(notas => notas.itens)
-  .filter(item => item.codigo == '2143')
-  .reduce((total, item) => (total + item.valor), 0)
+const getItemsFromInvoices = invoices => invoices.$flatMap(invoice => invoice.itens)
+const filterItemsByCode = (code, items) => items.filter(item => item.codigo === code)
+const sumItemsValue = items => items.reduce((total, item) => total + item.valor, 0);
 
 export const notasService = {
   listAll() {
@@ -18,6 +18,12 @@ export const notasService = {
   },
 
   sumItems(code) {
-    return this.listAll().then(sumItems(code))
+    const sumItems = pipe(
+      getItemsFromInvoices,
+      partialize(filterItemsByCode, code),
+      sumItemsValue,
+    )
+
+    return this.listAll().then(sumItems)
   }
 }
