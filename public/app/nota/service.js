@@ -5,7 +5,7 @@ const API = 'http://localhost:3000/notas'
 
 const getItemsFromInvoices = invoices => invoices.$flatMap(invoice => invoice.itens)
 const filterItemsByCode = (code, items) => items.filter(item => item.codigo === code)
-const sumItemsValue = items => items.reduce((total, item) => total + item.valor, 0);
+const sumItemsValue = items => items.reduce((total, item) => total + item.valor, 0)
 
 export const notasService = {
   listAll() {

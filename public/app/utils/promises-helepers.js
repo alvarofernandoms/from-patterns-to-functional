@@ -1,20 +1,20 @@
 export const handleStatus = res =>
-  res.ok ? res.json() : Promise.reject(res.statusText);
+  res.ok ? res.json() : Promise.reject(res.statusText)
 
 export const log = param => {
-  console.log(param);
-  return param;
+  console.log(param)
+  return param
 }
 
 export const promiseTimeout = (milliseconds, promise) => {
   const timeout = new Promise((resolve, reject) =>
     setTimeout(() =>
-      reject(`Limite da operação excedido (limite: ${milliseconds} ms)`), milliseconds));
+      reject(`Limite da operação excedido (limite: ${milliseconds} ms)`), milliseconds))
 
   return Promise.race([
     timeout,
     promise,
-  ]);
+  ])
 }
 
 export const delay = milliseconds => data =>
@@ -24,7 +24,7 @@ export const delay = milliseconds => data =>
 
 export const retry = (retries, milliseconds, fn) =>
   fn().catch(err => {
-    console.log(retries);
+    console.log(retries)
     return delay(milliseconds)().then(() =>
       retries > 1 ?
         retry(retries--, milliseconds, fn) :
